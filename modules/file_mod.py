@@ -62,12 +62,13 @@ def import_contacts_from_csv(args: list, book: AddressBook) -> str:
                         record.add_birthday(birthday.strip())
             print(f"{Fore.LIGHTBLUE_EX}Contacts added from file {file_name}!{Fore.RESET}")
         return file_name
-    except Exception as e:
-        if e == FileNotFoundError:
-            print(f"{Fore.LIGHTRED_EX}ERROR: File {file_name} not found!{Fore.RESET}")
-        else:
-            # Якщо дані у файлі з помилками, то отримаємо повідомлення
-            print(f"{Fore.LIGHTRED_EX}An ERROR occurred! Check the format for {file_name} data.{Fore.RESET}")
+    except FileNotFoundError:
+        print(f"{Fore.LIGHTRED_EX}ERROR: File {file_name} not found!{Fore.RESET}")
+    except OSError:
+        print(f"{Fore.LIGHTRED_EX}ERROR: Name of {file_name} file contains invalid argument! Please, give me a valid file-name!{Fore.RESET}")
+    except Exception:
+        # Якщо дані у файлі з помилками, то отримаємо повідомлення
+        print(f"{Fore.LIGHTRED_EX}An ERROR occurred! Check the format for {file_name} data.{Fore.RESET}")
 
 def export_contacts_to_csv(args: list, book: AddressBook):
     '''
@@ -105,3 +106,5 @@ def export_contacts_to_csv(args: list, book: AddressBook):
     except FileNotFoundError:
         # Якщо дані у файлі з помилками, то отримаємо повідомлення
         print(f"{Fore.LIGHTRED_EX}ERROR: File {file_name} can't be writed!{Fore.RESET}")
+    except OSError:
+        print(f"{Fore.LIGHTRED_EX}ERROR: Name of {file_name} file contains invalid argument! Please, give me a valid file-name!{Fore.RESET}")
