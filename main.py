@@ -60,7 +60,7 @@ def main():
                 else:
                     print(f"{Fore.LIGHTRED_EX}Invalid command.{Fore.RESET}")
         # Виклик команди експорту даних до файлу
-        elif command == "export":
+        elif command == "export-csv":
             # Якщо книга не пуста
             if book:
                 # Якщо не введено назу файлу та раніше було здійснено імпорт, 

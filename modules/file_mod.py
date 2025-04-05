@@ -31,6 +31,15 @@ def import_contacts_from_csv(args: list, book: AddressBook) -> str:
     # Перевіряємо на введення назви файлу
     try:
         file_name = args[0].lower().strip()
+        # претворюємо назу файйлу на формат csv
+        file_name = file_name.split(".")
+        if len(file_name) > 1:
+            if file_name[1] != "csv":
+                file_name = ".".join(file_name) + ".csv"
+            else:
+                file_name = ".".join(file_name)
+        else:
+            file_name = file_name[0] + ".csv"
     except Exception:
         print(f"{Fore.LIGHTRED_EX}ERROR: Enter a valid file-name!{Fore.RESET}")
         return
@@ -67,6 +76,15 @@ def export_contacts_to_csv(args: list, book: AddressBook):
     # Перевіряємо на введення назви файлу
     try:
         file_name = args[0].lower().strip()
+        # претворюємо назу файйлу на формат csv
+        file_name = file_name.split(".")
+        if len(file_name) > 1:
+            if file_name[1] != "csv":
+                file_name = ".".join(file_name) + ".csv"
+            else:
+                file_name = ".".join(file_name)
+        else:
+            file_name = file_name[0] + ".csv"
     except Exception:
         print(f"{Fore.LIGHTRED_EX}ERROR: Enter a valid file-name!{Fore.RESET}")
         return
@@ -86,4 +104,4 @@ def export_contacts_to_csv(args: list, book: AddressBook):
         print(f"{Fore.LIGHTBLUE_EX}Contacts saved to file {file_name}!{Fore.RESET}")
     except FileNotFoundError:
         # Якщо дані у файлі з помилками, то отримаємо повідомлення
-        print(f"{Fore.LIGHTRED_EX}ERROR: File {file_name} not found!{Fore.RESET}")
+        print(f"{Fore.LIGHTRED_EX}ERROR: File {file_name} can't be writed!{Fore.RESET}")
