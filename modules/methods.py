@@ -26,6 +26,8 @@ def input_error(func):
         except ValueError:
             if func.__name__ == "add_contact_birthday":
                 return f"{Fore.LIGHTRED_EX}ERROR: Give me name and valid birthday, please!{Fore.RESET}"
+            if func.__name__ == "show_upcoming_list":
+                return f"{Fore.LIGHTRED_EX}ERROR: Give me name and valid days number, please!{Fore.RESET}"
             return f"{Fore.LIGHTRED_EX}ERROR: Give me name and valid phone, please!{Fore.RESET}"            
         except KeyError:
             return f"{Fore.LIGHTRED_EX}ERROR: There is no such user!{Fore.RESET}"     
@@ -101,6 +103,9 @@ def show_phone(args: list, book: AddressBook) -> str:
 
 @input_error
 def add_contact_birthday(args: list, book: AddressBook) -> str:
+    '''
+    Команда додання контакту дати народження за його ім'ям
+    '''
     name, birthday = args
     # Приводимо введене ім'я до уніфікованого вигляду
     name = name.lower().capitalize().strip(",")
@@ -111,14 +116,34 @@ def add_contact_birthday(args: list, book: AddressBook) -> str:
 
 @input_error
 def show_birthday(args: list, book: AddressBook) -> str:
+    '''
+    Команда, що виводить дату народження за ім'ям контакту, у разі його наявності
+    '''
     # Приводимо введене ім'я до уніфікованого вигляду
     name = args[0].lower().capitalize().strip(",")
     # Повертаємо дату у вигляді рядка формату "ДД.ММ.РРРР"
     return book.find(name).birthday.value.strftime("%d.%m.%Y")
 
 @input_error
-def show_upcoming_list(book: AddressBook) -> str:
-    return book.get_upcoming_birthdays()
+def show_upcoming_list(args: list, book: AddressBook) -> list:
+    '''
+    Команда формавання таблиці із мписком іменинників на найближчі days_to дні
+    '''
+    try:
+        days_to = args[0].strip(" ").strip(",")
+        days_to = int(days_to)
+    except IndexError:
+        days_to = 7
+    # Отримаємо список найближчих іменинників з AddressBook та редагуємо для табличного виводу
+    congrats_list = book.get_upcoming_birthdays(days_to)
+    if congrats_list:       
+        congrats_list_str = f"  Список іменинників на наступні {days_to} днів: \n-------------------------------------------\n\
+|{'name':^15}|{'congratulation_date':^25}|\n-------------------------------------------\n"   
+        for item in congrats_list:
+            congrats_list_str += f"|{item["name"]:<15}|{item["congratulation_date"]:^25}|\n"
+        congrats_list_str += "-------------------------------------------"
+        return congrats_list_str
+    return f"В найближчі {days_to} днів немає іменинників!"
 
 @input_error
 def remove_contact(args: list, book: AddressBook) -> str:

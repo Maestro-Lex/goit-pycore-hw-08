@@ -11,6 +11,7 @@ def main():
         # Перевіряємо наявність вводу і, якщо нічого не введено, повторюємо запит
         try:
             command, *args = methods.parse_input(user_input)
+
         except ValueError:
             print(f"{Fore.LIGHTRED_EX}Please, enter any command!{Fore.RESET}")
             continue
@@ -34,7 +35,7 @@ def main():
         elif command == "show-birthday":
             print(f"{Fore.LIGHTBLUE_EX}{methods.show_birthday(args, book)}{Fore.RESET}")
         elif command == "birthdays":
-            methods.show_upcoming_list(book)
+            print(f"{Fore.LIGHTBLUE_EX}{methods.show_upcoming_list(args, book)}{Fore.RESET}")
         elif command == "del":
             print(f"{Fore.LIGHTBLUE_EX}{methods.remove_contact(args, book)}{Fore.RESET}")    
         elif command == "all":

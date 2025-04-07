@@ -36,7 +36,7 @@ class AddressBook(UserDict):
         print(f"{Fore.LIGHTYELLOW_EX}INFO:{Fore.RESET} There is no contact {name} in our AddressBook!")
         raise KeyError
     
-    def get_upcoming_birthdays(self):
+    def get_upcoming_birthdays(self, days_to):
         '''
         Функція повернутає список всіх, у кого день народження вперед на 7 днів включаючи поточний день, 
         з перенесенням вихідних.
@@ -59,19 +59,8 @@ class AddressBook(UserDict):
             else:
                 days_to_user_congrats = days_to_user_birthday_this_year
             # Відбираємо тих, чий день народження відбувається протягом наступного тижня
-            if days_to_user_birthday_this_year < 7:
+            if days_to_user_birthday_this_year < days_to:
                 user_congrats_day = today + timedelta(days = days_to_user_congrats)
                 user_congrats_day = user_congrats_day.strftime("%d.%m.%Y")
                 congrats_list.append({"name": name, "congratulation_date": user_congrats_day})
-
-        # Виводимо таблицю іменинників, якщо такі є    
-        if congrats_list:       
-            congrats_list_str = f"  Список іменинників на наступні 7 днів: \n-------------------------------------------\n\
-|{'name':^15}|{'congratulation_date':^25}|\n-------------------------------------------\n"   
-            for item in congrats_list:
-                congrats_list_str += f"|{item["name"]:<15}|{item["congratulation_date"]:^25}|\n"
-            congrats_list_str += "-------------------------------------------"
-            print(f"{Fore.LIGHTBLUE_EX}{congrats_list_str}{Fore.RESET}")
-            # Повертаємо список іменинників для можливих подальших обробок
-            return congrats_list
-        print(f"{Fore.LIGHTBLUE_EX}В найближчі 7 днів немає іменинників!{Fore.RESET}")
+        return congrats_list
